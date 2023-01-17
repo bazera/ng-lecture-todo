@@ -1,0 +1,4 @@
+<li class="item" [ngClass]="getItemClass(index + 1)">
+  <button (click)="deleteItem(index)">X</button>
+  <span *ngIf="showNumber(index)">{{ index + 1 }}.</span> {{ task }}
+</li>

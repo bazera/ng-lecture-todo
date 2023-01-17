@@ -1,0 +1,8 @@
+<ul>
+  <app-task-list-item
+    *ngFor="let task of tasks; let i = index"
+    [index]="i"
+    [task]="task"
+    (delete)="deleteItemHandler($event)"
+  ></app-task-list-item>
+</ul>
