@@ -1,0 +1,11 @@
+<ng-container *ngIf="!loading; else loadingTmp">
+  <ng-container *ngIf="selectedArticle; else noArticle">
+    <h3>{{ selectedArticle.name }}</h3>
+    <p>{{ selectedArticle.description }}</p>
+  </ng-container>
+</ng-container>
+
+<ng-template #loadingTmp
+  ><app-loading color="rgb(85, 162, 204)"></app-loading
+></ng-template>
+<ng-template #noArticle> Article not found </ng-template>

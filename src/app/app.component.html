@@ -1,5 +1,175 @@
-<app-add-task (taskAdd)="taskAddHandler($event)"></app-add-task>
-<app-task-list
-  [tasks]="tasks"
-  (delete)="taskDeleteHandler($event)"
-></app-task-list>
+<form
+  [formGroup]="form"
+  (ngSubmit)="handleSubmission()"
+  [class.submitted]="isSubmitted"
+>
+  <div>
+    <div>First Name:</div>
+    <div>
+      <input type="text" formControlName="firstName" />
+    </div>
+    <div
+      *ngIf="
+        form.controls['firstName'].errors &&
+        form.controls['firstName'].dirty &&
+        isSubmitted
+      "
+    >
+      <div *ngIf="form.controls['firstName'].errors['required']">
+        First Name is required
+      </div>
+      <div *ngIf="form.controls['firstName'].errors['minlength']">
+        First Name min length 3
+      </div>
+      <div *ngIf="form.controls['firstName'].errors['maxlength']">
+        First Name max length 10
+      </div>
+      <div *ngIf="form.controls['firstName'].errors['isUnsafe']">
+        {{ form.controls["firstName"].errors["isUnsafe"] }} is not a safe word.
+        Plese use a different first name
+      </div>
+    </div>
+  </div>
+  <div>
+    <div>Last Name:</div>
+    <div>
+      <input type="text" formControlName="lastName" />
+    </div>
+    <!-- <div
+      *ngIf="
+        form.form.controls['lastName'].errors &&
+        form.form.controls['lastName'].dirty &&
+        form.submitted
+      "
+    >
+      <div *ngIf="form.form.controls['lastName'].errors['required']">
+        Last Name is required
+      </div>
+    </div> -->
+  </div>
+  <div>
+    <div>Age:</div>
+    <div>
+      <input type="number" formControlName="age" />
+    </div>
+    <!-- <div
+      *ngIf="
+        form.form.controls['age'].errors &&
+        form.form.controls['age'].dirty &&
+        form.submitted
+      "
+    >
+      <div *ngIf="form.form.controls['age'].errors['required']">
+        Age is required
+      </div>
+      <div *ngIf="form.form.controls['age'].errors['min']">Min age is 18</div>
+      <div *ngIf="form.form.controls['age'].errors['max']">Max age is 80</div>
+    </div> -->
+  </div>
+  <div>
+    <div>Email:</div>
+    <div>
+      <input type="email" formControlName="email" />
+    </div>
+    <div
+      *ngIf="
+        form.controls['email'].errors &&
+        form.controls['email'].dirty &&
+        isSubmitted
+      "
+    >
+      <div *ngIf="form.controls['email'].errors['required']">
+        Email is required
+      </div>
+      <div *ngIf="form.controls['email'].errors['pattern']">
+        Please enter a valid email
+      </div>
+      <div *ngIf="form.controls['email'].errors['isUsed']">
+        Email is already used
+      </div>
+    </div>
+  </div>
+  <div>
+    <div>Hobbies:</div>
+    <div formArrayName="hobbies">
+      <div
+        *ngFor="
+          let hobbyControl of form.controls.hobbies?.controls;
+          let i = index
+        "
+      >
+        <select [formControl]="hobbyControl">
+          <option [value]="''" hidden>Select Hobby</option>
+          <option
+            *ngFor="
+              let hobby of hobbies
+                | hobbies : form.value.hobbies : hobbyControl.value
+            "
+            [value]="hobby"
+          >
+            {{ hobby }}
+          </option>
+        </select>
+        <button (click)="removeHobbyControl(i)" [disabled]="removeBtnDisabled">
+          X
+        </button>
+      </div>
+      <button
+        type="button"
+        (click)="addHobbyControl()"
+        [disabled]="plusBtnDisabled"
+      >
+        +
+      </button>
+    </div>
+  </div>
+  <div>
+    <div>Occupation:</div>
+    <div>
+      <select formControlName="occupation">
+        <option [value]="null" selected hidden>Select</option>
+        <option [value]="occupation.Developer">
+          {{ occupation.Developer }}
+        </option>
+        <option [value]="occupation.Manager">{{ occupation.Manager }}</option>
+        <option [value]="occupation.Tester">{{ occupation.Tester }}</option>
+      </select>
+    </div>
+  </div>
+  <div *ngIf="form.controls['developerOf']">
+    <div>Developer Of:</div>
+    <div>
+      <input type="text" formControlName="developerOf" />
+    </div>
+  </div>
+  <div *ngIf="form.controls['managerOf']">
+    <div>Manager Of:</div>
+    <div>
+      <input type="text" formControlName="managerOf" />
+    </div>
+  </div>
+  <div>
+    <div>Gender:</div>
+    <div>
+      <input
+        type="radio"
+        id="male"
+        [value]="gender.Male"
+        name="gender"
+        formControlName="gender"
+      />
+      <label for="male"> Male</label>
+    </div>
+    <div>
+      <input
+        type="radio"
+        id="female"
+        [value]="gender.Female"
+        name="gender"
+        formControlName="gender"
+      />
+      <label for="female"> Female</label>
+    </div>
+  </div>
+  <button type="submit">Register</button>
+</form>

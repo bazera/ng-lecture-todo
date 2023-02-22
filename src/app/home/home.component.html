@@ -1,0 +1,11 @@
+<!-- <div>{{ obs$ | async }}</div> -->
+
+<!-- <div *ngIf="obs$ | async as test; else-if: test?.length; else: empty">
+  {{ test }}
+</div> -->
+
+<ng-container *ngIf="obs$ | async as test">
+  <ng-container *ngIf="test?.length; else empty">{{ test }}</ng-container>
+</ng-container>
+
+<ng-template #empty>List is Empty</ng-template>
